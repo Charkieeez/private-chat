@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Private Chat</title>
+  <link rel="preconnect" href="https://unpkg.com"/>
+  <link rel="stylesheet" href="/styles.css"/>
+  <script defer src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script defer src="/config.js"></script>
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="nav">
+      <div class="brand">
+        <div class="logo">🔒</div>
+        <div class="title">Private Chat</div>
+      </div>
+      <a class="pill secondary" href="https://vercel.com" target="_blank" rel="noreferrer">Powered by Vercel</a>
+    </header>
+
+    <main class="content">
+      <section class="hero card">
+        <div class="hero-copy">
+          <h1>Share a private room link.</h1>
+          <p>Instant chat over Supabase Realtime broadcast. No logins, no database, just an unguessable invite link.</p>
+          <div class="cta">
+            <button id="btnCreate" class="pill primary">Create Room</button>
+            <button id="btnCopy" class="pill" disabled>Copy Invite</button>
+            <button id="btnShare" class="pill" disabled>Share…</button>
+            <button id="btnQR" class="pill" disabled>QR Invite</button>
+          </div>
+          <div id="inviteWrap" class="invite hidden">
+            <label>Invite Link</label>
+            <div class="invite-row">
+              <input id="invite" readonly/>
+              <button id="btnCopy2" class="pill">Copy</button>
+            </div>
+            <div class="tiny hint">Anyone with this link can join. For stronger access control, upgrade to Auth + RLS later.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="chat card hidden" id="chatCard">
+        <div class="chathead">
+          <div class="roomtag">Room: <span id="roomName"></span></div>
+          <div class="status" id="status">disconnected</div>
+        </div>
+        <form class="setup" id="setup">
+          <input id="username" placeholder="Pick a username" maxlength="24" autocomplete="off"/>
+          <button id="btnConnect" class="pill primary" type="submit">Join</button>
+        </form>
+        <div id="messages" class="messages"></div>
+        <form id="composer" class="composer hidden">
+          <input id="text" placeholder="Type a message…" autocomplete="off"/>
+          <button class="pill primary" type="submit">Send</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <span>Supabase project is baked into this build. Please rotate your anon key if you publish widely later.</span>
+    </footer>
+  </div>
+
+  <!-- QR Modal -->
+  <div id="qrModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title">Scan to Join</div>
+        <button id="qrClose" class="pill">Close</button>
+      </div>
+      <div class="qr-wrap">
+        <canvas id="qrCanvas" width="256" height="256"></canvas>
+      </div>
+      <div class="qr-link">
+        <input id="qrLink" readonly />
+        <button id="qrCopy" class="pill">Copy</button>
+      </div>
+      <div class="tiny hint">Open the link or scan the QR to join this room.</div>
+    </div>
+  </div>
+</body>
+</html>
